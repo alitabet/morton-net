@@ -54,7 +54,7 @@ class S3DISSequenceDataset(Dataset):
         else:
             data = [self._get_data(paths[i]) for i in range(paths.shape[0])]
 
-        # if we shuffle is true then we shuffle
+        # if shuffle is true then we shuffle
         # the index of the point cloud files
         if self.shuffle:
             np.random.seed(42)
@@ -72,7 +72,7 @@ class S3DISSequenceDataset(Dataset):
         are 'none' for no clustering, 'random' for random
         selection of sequences, or 'kmeans' for K-means clustering
 
-        :param data: tuple with file, keys, cluster
+        :param file: full path for file h5 file containing data
         :return: dictionary indexed by keys, containing data
         """
         hdf5_file = h5py.File(file, 'r')
