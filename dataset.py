@@ -22,7 +22,7 @@ class S3DISSequenceDataset(Dataset):
         Data is points and sequence indices for training a feature extractor
 
         :param root_dir: root folder containing the phase data folder
-        :param phase: either train, valid, or test
+        :param phase: either train, or valid
         :param chunk_size: internal batch size
         :param seq_len: length of each sequence (max 100)
         :param random_sequence: if True then we randomly shuffle sequences, instead of z-order
@@ -41,7 +41,11 @@ class S3DISSequenceDataset(Dataset):
         self.seq_type = seq_type
         self.keys_to_retrieve = ['data', 'indices']
 
-        paths = np.array(sorted(glob.glob(os.path.join(root_dir, '{}/*.hdf5'.format(phase)))))
+        paths = np.array(sorted(glob.glob(os.path.join(root_dir, '*.hdf5'.format(phase)))))
+        if phase == 'train':
+            paths = paths[:int(0.8 * paths.shape[0])]
+        if phase == 'valid':
+            paths = paths[int(0.8 * paths.shape[0]):]
 
         logging.info('Creating S3DISSequenceDataset for phase {}. Number of cloud points {}. Clustering using {}'
                      .format(phase, len(paths), self.cluster))
@@ -195,7 +199,7 @@ def cluster_sequences(out, cluster='random', ratio=0.4):
     return out['indices']
 
 
-def get_data_loaders(root_dir, phases=['train', 'valid', 'test'], shuffle=False, cluster=None, chunk_size=512,
+def get_data_loaders(root_dir, phases=['train', 'valid'], shuffle=False, cluster=None, chunk_size=512,
                      batch_size=1, seq_len=100, random_sequence=False, ratio=0.4, seq_type='normal'):
     """
     Function to get train and val dataloaders for S3DIS.
@@ -203,7 +207,7 @@ def get_data_loaders(root_dir, phases=['train', 'valid', 'test'], shuffle=False,
     supervised network to create point features.
 
     :param root_dir: root folder containing all the data
-    :param phases: list of phase types ('train', 'valid, 'test')
+    :param phases: list of phase types ('train', 'valid')
     :param shuffle: whether we shuffle data order
     :param cluster: either None, 'random', or 'kmeans'. If none then no clustering
     :param chunk_size: size of data chunks
