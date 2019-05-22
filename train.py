@@ -1,4 +1,4 @@
-from argparse import ArgumentParser
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import logging
 import time
 import uuid
@@ -317,7 +317,8 @@ if __name__ == '__main__':
     of RNN layers, size of hidden state, and chunk size. We measure the 
     success of each experiment by measuring validation loss/accuracy.
     """
-    parser = ArgumentParser(description='Train MortonNet to predict the next point in z-ordered sequences.')
+    parser = ArgumentParser(description='Train MortonNet to predict the next point in z-ordered sequences.',
+                            formatter_class=ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('--root_dir', required=True, type=str,
                         help='root directory containing train and val folders with hdf5 files')
@@ -342,7 +343,7 @@ if __name__ == '__main__':
     parser.add_argument('--bs', default=1, type=int,
                         help='batch size')
     parser.add_argument('--loglevel', default='INFO', type=str,
-                    help='logging level')
+                        help='logging level')
 
     args = parser.parse_args()
     numeric_level = getattr(logging, args.loglevel.upper(), None)

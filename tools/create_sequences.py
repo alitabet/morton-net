@@ -171,7 +171,7 @@ if __name__ == '__main__':
     compute Morton features from a pre-trained model.
     """
     parser = ArgumentParser(description='Create HDF5 files for the self-supervised sequence dataset',
-                        formatter_class=ArgumentDefaultsHelpFormatter)
+                            formatter_class=ArgumentDefaultsHelpFormatter)
     # required arguments.
     parser.add_argument('--root_dir', required=True, type=str,
                         help='Path to the root directory with npy files')
