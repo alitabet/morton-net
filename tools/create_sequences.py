@@ -128,7 +128,7 @@ def process_one_file(file):
                           compression='gzip', compression_opts=1)
 
     h_file.create_dataset('indices', data=indices, shape=indices.shape, dtype=indices.dtype,
-                          compression='gzip', compression_opts=1)
+                          compression='gzip', compression_opts=4)
 
     h_file.close()
 

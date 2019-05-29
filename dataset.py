@@ -6,6 +6,7 @@ import h5py
 import time
 import datetime
 from multiprocessing import Pool
+from tqdm import trange
 
 from sklearn.cluster import KMeans
 
@@ -41,7 +42,7 @@ class S3DISSequenceDataset(Dataset):
         self.seq_type = seq_type
         self.keys_to_retrieve = ['data', 'indices']
 
-        paths = np.array(sorted(glob.glob(os.path.join(root_dir, '*.hdf5'.format(phase)))))
+        paths = np.array(sorted(glob.glob(os.path.join(root_dir, '*.h5'.format(phase)))))
         if phase == 'train':
             paths = paths[:int(0.8 * paths.shape[0])]
         if phase == 'valid':
@@ -56,7 +57,11 @@ class S3DISSequenceDataset(Dataset):
             with Pool() as p:
                 data = p.map(self._get_data, paths)
         else:
-            data = [self._get_data(paths[i]) for i in range(paths.shape[0])]
+            data = []
+            for i in trange(paths.shape[0], desc='Loading data for phase {}. Clustering using {}'
+                                                 .format(phase, self.cluster)):
+                data.append(self._get_data(paths[i]))
+            # data = [self._get_data(paths[i]) for i in range(paths.shape[0])]
 
         # if shuffle is true then we shuffle
         # the index of the point cloud files
