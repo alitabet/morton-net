@@ -42,7 +42,7 @@ class S3DISSequenceDataset(Dataset):
         self.seq_type = seq_type
         self.keys_to_retrieve = ['data', 'indices']
 
-        paths = np.array(sorted(glob.glob(os.path.join(root_dir, '*.h5'.format(phase)))))
+        paths = np.array(sorted(glob.glob(os.path.join(root_dir, '*.h5'))))
         if phase == 'train':
             paths = paths[:int(0.8 * paths.shape[0])]
         if phase == 'valid':

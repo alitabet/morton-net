@@ -56,7 +56,7 @@ about available commands run the `--help` or `-h` options.
 Once the sequences are precomputed, you can train MortonNot with:
 
 ```commandline
-python train.py python train.py --root_dir path/to/sequences --model_dir path/to/checkpoint/save
+python train.py --root_dir path/to/sequences --model_dir path/to/checkpoint/save
 ```
 
 There are different ways to configure MortonNet parameters. Possible 
@@ -75,5 +75,5 @@ all 5 features for each point, which can later be concatenated or pooled.
 To compute features run:
 
 ```commandline
-python compute_features.py --root_dir path/to/sequences --best_path path/to/mortonnet/model --phase train/valid/test
+python compute_features.py --root_dir path/to/sequences --best_path path/to/mortonnet/model --out_dir path/to/save/features
 ```

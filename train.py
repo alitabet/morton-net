@@ -3,6 +3,7 @@ import logging
 import time
 import uuid
 import os
+from tqdm import tqdm
 
 from tools.config import Config, backward_compatible_config
 from tools.utils import Timer, MetricTracker
@@ -141,7 +142,6 @@ def train(config, model, criterion, optimizer, dataloaders, device, model_dir, p
     phase_trackers, batch_trackers = create_trackers(phases)
 
     for epoch in range(config['max_epochs']):
-        logging.info('Epoch {}/{}'.format(epoch + 1, config['max_epochs']))
 
         for phase in phases:
             batch_trackers['loss'][phase].reset()
@@ -155,7 +155,8 @@ def train(config, model, criterion, optimizer, dataloaders, device, model_dir, p
                 model.eval()
 
             num_steps = len(dataloaders[phase])
-            for step_number, (sequences, original, last_length, _) in enumerate(dataloaders[phase]):
+            for step_number, (sequences, original, last_length, _) in \
+                    enumerate(tqdm(dataloaders[phase], desc='Epoch {}/{}'.format(epoch + 1, config['max_epochs']))):
                 last_length = last_length[0].to(device)
                 # point clouds have a lot of sequences, we process them by chunks
                 for c in range(sequences.size(1)):
