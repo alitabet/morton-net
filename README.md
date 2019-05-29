@@ -77,3 +77,20 @@ To compute features run:
 ```commandline
 python compute_features.py --root_dir path/to/sequences --best_path path/to/mortonnet/model --out_dir path/to/save/features
 ```
+
+### Citation
+
+If you find our work helpful, please cite our paper.
+
+```
+@misc{thabet2019mortonnet,
+    title={MortonNet: Self-Supervised Learning of Local Features in 3D Point Clouds},
+    author={Ali Thabet and Humam Alwassel and Bernard Ghanem},
+    year={2019},
+    eprint={1904.00230},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV}
+}
+```
+
+
